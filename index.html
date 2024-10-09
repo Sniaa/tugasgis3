@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desakuu</title>
+    <link rel="stylesheet" href="assets/leaflet.css">
+    <script src="assets/leaflet.js"></script>
+    <script src="ART.geojson.js"></script>
+    <script src="LINE.geojson.js"></script>
+<style>
+    body,html{
+        padding: 0px;
+        margin: 0px;
+        height: 100%;
+    }
+    #map{
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+var greenIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3197/3197780.png',
+    iconSize:     [38, 38], // size of the icon
+    iconAnchor:   [22, 34], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
+});
+var readnIcon = L.icon({
+    iconUrl: "assets/images/masjid.jpeg",
+    iconSize:     [38, 38], // size of the icon
+    iconAnchor:   [22, 34], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
+});
+var yellownIcon = L.icon({
+    iconUrl: "assets/images/desa.jpeg",
+    iconSize:     [38, 38], // size of the icon
+    iconAnchor:   [22, 34], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
+});
+var pasaernIcon = L.icon({
+    iconUrl: "assets/images/pasar.jpeg",
+    iconSize:     [38, 38], // size of the icon
+    iconAnchor:   [22, 34], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
+});
+
+    var kantor_desa = L.marker([-8.807016159752246, 116.26195905757625],{icon: yellownIcon }).bindPopup("KANTOR DESA");
+    var pemerintahan = L.layerGroup([kantor_desa]);
+    // var sma = L.marker([-8.80776033907822, 116.26385766050798]).addTo(map)
+
+    // kantor_desa.bindPopup("kantor desa pengembur").openPopup();
+    //  sma.bindPopup("sma nurul iman nw pengembur").openPopup();
+
+    //marker fasilitas pendidikan (sekolah)
+    var yayasan = L.marker([-8.81810439845089, 116.26304124149311],{icon: greenIcon}).bindPopup('Yayasan Nurul Hidayah Tawah'),
+        pplp    = L.marker([-8.810805038671692, 116.25996220435744],{icon: greenIcon}).bindPopup('PPLP SILEDENDEN'),
+        smp4    = L.marker([-8.802054079289439, 116.26187665220912],{icon: greenIcon}).bindPopup('SMPN 4 PUJUT'),
+        sd_kerame    = L.marker([-8.831719683340914, 116.2529281818793],{icon: greenIcon}).bindPopup('Dusun siwang desa kerame jati kecamatan Pujut,kabupaten lombok tengah,prov,NTB'),
+        sd_tamping    = L.marker([-8.833324599515574, 116.25859602956268],{icon: greenIcon}).bindPopup('SDN TAMPING DAN SMPN 12 SATU ATAP PUJUT (SDN DAN SMP TAMPING)'),
+        nu    = L.marker([-8.836504945341488, 116.26516901907152],{icon: greenIcon}).bindPopup('MI Al-Ma,arif NU Tonjeng'),
+        sdn_bunmas    = L.marker([-8.802550954765463, 116.27645008203083],{icon: greenIcon}).bindPopup('SDN Bunmas');
+    var pendidikan = L.layerGroup([yayasan, pplp, smp4, sd_kerame, sd_tamping, nu, sdn_bunmas]);
+
+        //marker fasilitas ibadah
+    var musholla = L.marker([-8.81534710875615, 116.26030873062318],{icon: readnIcon}).bindPopup('Mushalla Al ikhlas'),
+        musholla4    = L.marker([-8.803656443209725, 116.26326628709072],{icon: readnIcon}).bindPopup('KAMPUNG HIJRAH-PENGEMBUR'),
+        masjid = L.marker([-8.804387120634805, 116.26129458277902],{icon: readnIcon}).bindPopup('MASJID MIFTAHUL JANNAH PENYAMPI,DESA PENGEMBUR'),
+        masjid3    = L.marker([-8.809745377645331, 116.25907641542837],{icon: readnIcon}).bindPopup('Masjid Al mujahidin Kenauh'),
+        masjid4    = L.marker([-8.834587190157341, 116.25537946984393],{icon: readnIcon}).bindPopup('masjid nurul huda');
+        var ibadah = L.layerGroup([musholla, musholla4, masjid, masjid3, masjid4]);
+        
+    //marker fasilitas umum
+    var pasar = L.marker([-8.807730651866086, 116.26081913877225],{icon:pasaernIcon}).bindPopup('pasar pengembur');
+    var umum = L.layerGroup([pasar]);
+    
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+         });
+        const map = L.map('map',{
+            center: [-8.807016159752246, 116.26195905757625],
+            zoom: 15,
+            layers: [osm, pemerintahan]
+        });
+        const baseMap={
+            "basepeta":osm,
+            "OpenStreetMap":osm,
+            "satellite":satellite
+        };
+        const overlayMaps = {
+            "pemerintahan":pemerintahan,                           
+            "pendidikan":pendidikan,
+            "ibadah":ibadah,
+            "umum":umum
+        };
+
+        const layerControl = L.control.layers(baseMap, overlayMaps).addTo(map);
+
+        //menampilkan data batas kelurahan
+        var pengembur = L.geoJSON([pengembur], {
+            style: function (feature){
+                return feature.properties && feature.properties.style;
+            }
+        }).addTo(map);
+
+    function onMapClick(e) {
+        alert("you click the map at " + e.latlng);
+    }
+//     map.on('click', onMapClick);
+//     const map = L.map('map').setView([-8.7111953,116.3446173], 13);
+    
+//     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//         maxZoom: 19,
+//         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+//     }).addTo(map);
+//     var pengembur = L.geoJSON([pengembur], {
+//     style:function(feature){
+//         return feature.properties && feature.properties.style;
+//     }
+// }).addTo(map);
+
+    </script>
+</body> 
+</html>
